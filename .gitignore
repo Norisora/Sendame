@@ -1,0 +1,26 @@
+##### Unity #####
+/Library
+/Temp
+/obj
+/Logs/*
+/UserSettings
+/EditorResources
+/AppPackage
+/AssetBundles
+
+# Packages-Update.logだけは監視してみる
+!Logs/Packages-Update.log
+
+
+##### VS #####
+.vs
+*.csproj
+*.sln
+
+
+##### その他 #####
+Thumbs.db
+.DS_Store
+__pycache__
+External/MasterData/Scripts/Logs/
+External/WebAPI/GeneratedRep
