@@ -5,9 +5,16 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour
 {
     [SerializeField]
+    Transform enemyHand;
+    [SerializeField]
+    Transform enemyField;
+    [SerializeField]
+    Transform playerField;
+    [SerializeField]
     Transform playerHand;
     [SerializeField]
     CardController cardPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +23,14 @@ public class GameMaster : MonoBehaviour
 
     void StartGame()
     {
-        CardController card = Instantiate(cardPrefab, playerHand);
-        card.Init(1);
+        CreateCard(1, playerHand);
+        CreateCard(3, playerField);
+        CreateCard(2, playerField);
+    }
+
+    void CreateCard(int cardID, Transform place)
+    {
+        CardController card = Instantiate(cardPrefab, place);
+        card.Init(cardID);
     }
 }
