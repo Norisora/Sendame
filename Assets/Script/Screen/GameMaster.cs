@@ -7,15 +7,16 @@ public class GameMaster : MonoBehaviour
     [SerializeField]
     Transform playerHand;
     [SerializeField]
-    GameObject cardPrefab;
+    CardController cardPrefab;
     // Start is called before the first frame update
     void Start()
     {
-        InstantCard(playerHand);
+        StartGame();
     }
 
-    void InstantCard(Transform hand)
+    void StartGame()
     {
-        Instantiate(cardPrefab, hand, false);
+        CardController card = Instantiate(cardPrefab, playerHand);
+        card.Init(1);
     }
 }
