@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 2
   name: Shield
-  icon: {fileID: 21300000, guid: 06ad70f1c3fe64c428200b3826d9fbe2, type: 3}
+  icon: {fileID: 21300000, guid: 37c7fdef51005b748a2c6e7b3b858e71, type: 3}

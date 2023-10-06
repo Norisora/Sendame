@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 1
   name: Attack
-  icon: {fileID: 21300000, guid: 8c31fbdd9b20cbc47acc31e9de53960d, type: 3}
+  icon: {fileID: 21300000, guid: a1f082ffdd580a94c8d5d2d0b6f15bff, type: 3}
