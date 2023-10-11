@@ -15,6 +15,6 @@ public class CardController : MonoBehaviour
     public void Init(int CardID)    //カード生成時に呼ばれる関数
     {
         cardModel = new CardModel(CardID);  //カードデータを取得
-        cardView.Show(cardModel);
+        cardView.Show(cardModel);       //カードの生成
     }
 }
