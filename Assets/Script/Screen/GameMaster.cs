@@ -18,7 +18,7 @@ public class GameMaster : MonoBehaviour
     Transform playerHand;
 
     bool isPlayerTurn = true;
-    List<int> PlayerDeck = new List<int>() {1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+    List<int> PlayerDeck = new List<int>() { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3 };
 
     CardController[] playerHandCardList;
     CardController[] enemyHandCardList;
@@ -35,48 +35,57 @@ public class GameMaster : MonoBehaviour
 
     void StartGame()
     {
-        SetStartHand(playerHandCardList,playerHand); //３枚配る
+        playerHandCardList = new CardController[5];
+        enemyHandCardList = new CardController[5];
+        SetStartHand(playerHandCardList, playerHand); //３枚配る
         SetStartHand(enemyHandCardList, enemyHand);
     }
 
-    void CreateCard(int cardID, Transform place, int i)
+    CardController CreateCard(int cardID, Transform place, int i)
     {
         float cardSpacing = 5.0f;
         float posX = place.position.x - 11.0f + (i * cardSpacing);
-            
+
         Vector2 initPos = new Vector2(posX, place.position.y);
-        CardController card = Instantiate(cardPrefab, initPos,Quaternion.identity, place); ;
+        CardController card = Instantiate(cardPrefab, initPos, Quaternion.identity, place); ;
         card.Init(cardID);
+        return card;
     }
 
     void SetStartHand(CardController[] handCardList, Transform hand)     //カードを３枚配る
     {
-        handCardList = new CardController[5];
-        for (int i = 0; i < 3; i++)
+      
+
+        for (int ii = 0; ii < 3; ii++)
         {
-            DrawCard(hand);
+            DrawCard(handCardList,hand);
         }
+
     }
-    void DrawCard(Transform hand)   //カードをドローする
+    void DrawCard(CardController[] handCardList, Transform hand)   //カードをドローする
     {
         if (!PlayerDeck.Any())     //カードが１枚もないとき
         {
             return;
         }
-        for (int i = 0; i < playerHandCardList.Length; i++)
+
+        for (int i = 0; i < handCardList.Length; i++)
         {
-            if (playerHandCardList[i] == null)
+            if (handCardList[i] == null)
             {
                 int cardID = PlayerDeck.First();
                 PlayerDeck.RemoveAt(0);
 
                 //Transform emptySlot = FindEmptySlot(hand);
                 //if(emptySlot != null)
-                CreateCard(cardID, hand, i);
+                handCardList[i] = CreateCard(cardID, hand, i);
+                break;
             }
         }
-        
     }
+
+  
+    
     //Transform FindEmptySlot(Transform hand)
     //{
     //    // 手札内のすべてのスロットを取得
@@ -144,12 +153,12 @@ public class GameMaster : MonoBehaviour
     void PlayerTurn()
     {
         Debug.Log("Playerのターン");
-        DrawCard(playerHand);   //手札を一枚加える
+        DrawCard(playerHandCardList,playerHand);   //手札を一枚加える
     }
     void EnemyTurn()
     {
         Debug.Log("Enemyのターン");
-        CreateCard(1, enemyField,1);
+        DrawCard(enemyHandCardList,enemyHand);
         ChangeTurn();   //ターンエンド
     }
 }
