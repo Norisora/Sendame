@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class DeckData
 {
     List<CardData> cards = new List<CardData>();
 
-    public void CreateTestData()
+    public void CreateData()
     {
-        int[] testDatas = { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+        int[] Data = { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
 
-        foreach (var v in testDatas)
+        foreach (var v in Data)
         {
             cards.Add(new CardData() { ID = v });
         }
-        
     }
 
-    public CardData DrawCard()
+    public CardData PassCard()
     {
         if (!cards.Any())
         {

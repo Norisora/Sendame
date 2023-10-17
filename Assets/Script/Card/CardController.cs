@@ -1,20 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CardController : MonoBehaviour
+public class CardController : MonoBehaviour, IPointerDownHandler
 {
-    public CardView cardView;
-    public CardModel cardModel;
+    Action<CardController> SelectCard;
+    public bool IsActive { get; private set; }
+    public CardData Data { get; private set; }
+    public CardView CardView { get; private set; }
+    public CardModel CardModel { get; private set; }
 
     private void Awake()
     {
-        cardView = GetComponent<CardView>();
+        CardView = GetComponent<CardView>();
     }
 
-    public void Init(int CardID)    //カード生成時に呼ばれる関数
+    public void InitCard(CardData cardData, Action<CardController> selectCard)    //カード生成時に呼ばれる関数
     {
-        cardModel = new CardModel(CardID);  //カードデータを取得
-        cardView.Show(cardModel);       //カードの生成
+        SelectCard = selectCard;
+        Data = cardData;
+        int cardID = Data.ID;
+        CardModel = new CardModel(cardID);  //カードデータを取得
+        CardView.Show(CardModel);       //カードの生成
+    }
+
+    public void ApplyCard(int currentBuildUp)
+    {
+        IsActive = currentBuildUp >= Data.NeedBuildUpValue;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if(!IsActive) return;
+
+        if(SelectCard != null)
+        {
+            SelectCard(this);
+        }
     }
 }

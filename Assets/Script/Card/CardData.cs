@@ -7,14 +7,13 @@ public class CardData
     public enum CardType
     {
         Attack,
-        Defence,
-        Charge,
-
+        Shield,
+        BuildUp,
     };
 
     public int ID { get; set; }
 
     public CardType Type { get; set; }
 
-    public int NeedChargeValue { get; set; }
+    public int NeedBuildUpValue { get; set; }
 }

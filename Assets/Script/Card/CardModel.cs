@@ -13,7 +13,7 @@ public class CardModel
         CardEntity cardEntity = Resources.Load<CardEntity>("CardEntityList/Card" + cardID);
 
         cardID = cardEntity.cardID;
-        name = cardEntity.name;
+        name = cardEntity.cardName;
         icon = cardEntity.icon;
     }
 }

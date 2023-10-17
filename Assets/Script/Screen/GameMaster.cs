@@ -3,9 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static CardData;
 
 public class GameMaster : MonoBehaviour
 {
+    public enum State       //
+    {
+        Battle,
+        PlayerWin,
+        PlayerLose,
+    }
+
     [SerializeField]
     CardController cardPrefab;
     [SerializeField]
@@ -16,6 +24,12 @@ public class GameMaster : MonoBehaviour
     Transform playerField;
     [SerializeField]
     Transform playerHand;
+
+    [SerializeField]
+    Player player;
+    [SerializeField]
+    Enemy enemy;
+    State state;    //
 
     bool isPlayerTurn = true;
     List<int> PlayerDeck = new List<int>() { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3 };
@@ -30,7 +44,73 @@ public class GameMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartGame();
+        StartCoroutine(GameLoop());
+    }
+
+    IEnumerator GameLoop()
+    {
+        state = State.Battle;
+
+        player.deckData.CreateData();
+        enemy.deckData.CreateData();
+
+        player.DrawCard(3);
+        enemy.DrawCard(3);
+        while(state == State.Battle)
+        {
+            player.DrawCard(1);
+            enemy.DrawCard(1);
+            player.TurnStart();
+            enemy.TurnStart();
+
+            yield return player.Turn();
+            yield return enemy.Turn();
+
+            yield return BattlePart();
+        }
+
+        //リザルト＝＝＝
+        //=============
+    }
+
+    IEnumerator BattlePart()
+    {
+        var playerType = player.SelectCardObject.Data.Type;
+        var enemyType = enemy.SelectCardObject.Data.Type;
+
+        if (playerType == CardType.Attack && enemyType != CardType.BuildUp)
+        {
+            //Enemyのダメージ
+        }
+        if (enemyType == CardType.Attack && playerType != CardType.BuildUp)
+        {
+            //Playerのダメージ
+        }
+
+        if(player.Life <= 0)
+        {
+            state = State.PlayerLose;
+            yield break;
+        }
+        if(enemy.Life <= 0)
+        {
+            state = State.PlayerWin;
+            yield break;
+        }
+
+        if(playerType == CardType.BuildUp)
+        {
+            player.BuildUp(1);
+        }
+        if(enemyType == CardType.BuildUp)
+        {
+            enemy.BuildUp(1);
+        }
+
+        //
+
+        //
+        yield break;
     }
 
     void StartGame()
@@ -48,7 +128,7 @@ public class GameMaster : MonoBehaviour
 
         Vector2 initPos = new Vector2(posX, place.position.y);
         CardController card = Instantiate(cardPrefab, initPos, Quaternion.identity, place); ;
-        card.Init(cardID);
+        //card.InitCard(cardID);
         return card;
     }
 

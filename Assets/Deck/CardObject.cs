@@ -10,9 +10,9 @@ public class CardObject : MonoBehaviour, IPointerDownHandler
     Action<CardObject> SelectCard;
 
     public bool IsActive { get; private set; }
-    public CardData Data { get; private set; }
+    public CardDataTest Data { get; private set; }
 
-    public void InitCard(CardData cardData, Action<CardObject> selectCard)
+    public void InitCard(CardDataTest cardData, Action<CardObject> selectCard)
     {
         SelectCard = selectCard;
         Data = cardData;
@@ -21,7 +21,7 @@ public class CardObject : MonoBehaviour, IPointerDownHandler
 
     public void ApplyCard(int currentCharge)
     {
-        IsActive = currentCharge >= Data.NeedChargeValue;
+        IsActive = currentCharge >= Data.NeedChargeValue;   //‚½‚ß‚é‚ª•K—v”‚ ‚ê‚Îg‚¦‚é
     }
     public void OnPointerDown(PointerEventData eventData)
     {

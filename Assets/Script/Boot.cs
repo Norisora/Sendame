@@ -9,7 +9,7 @@ public class Boot : MonoBehaviour
 
     void Start()
     {
-        GameDirector.Instance.TransitionManager.TransitionScreen(ConstScreenList.ScreenType.Title);
+        GameDirector.Instance.TransitionManager.TransitionScreen(bootScreen);
 
         Destroy(this.gameObject);
     }

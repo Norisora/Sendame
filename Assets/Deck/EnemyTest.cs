@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Human
+public class EnemyTest : DeckUserBaseTEST
 {
 
     public override void TrunStart()

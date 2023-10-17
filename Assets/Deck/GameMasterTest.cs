@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static CardData;
+using static CardDataTest;
 
 public class GameMasterTest : MonoBehaviour
 {
@@ -14,9 +14,9 @@ public class GameMasterTest : MonoBehaviour
     }
 
     [SerializeField]
-    Player player;
+    PlayerTest player;
     [SerializeField]
-    Enemy enemy;
+    EnemyTest enemy;
 
     State state;
 
