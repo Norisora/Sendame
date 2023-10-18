@@ -20,7 +20,7 @@ public class DeckUserBase : MonoBehaviour
     private void Awake()
     {
         handCards = new CardController[5];
-        //deckData = new DeckData();
+        deckData = new DeckData();
     }
 
     public virtual void TurnStart()
@@ -48,23 +48,26 @@ public class DeckUserBase : MonoBehaviour
     {
         while (count > 0)
         {
-            var cardData = deckData.PassCard();     //デッキの一番上のCardData1を渡す
-            
+            var cardData = deckData.PassCard();     //デッキの一番上のCardDataを渡す
+            Debug.Log("for直前のカードID" + cardData.ID);      //ID=1が5回、ID=2が５回、ID=3が５回
             for (int i = 0; i < handCards.Length; i++)
             {
+                Debug.Log("for直後のカードID" + cardData.ID);      //ID=1が5回、ID=2が５回、ID=3が５回
                 if (handCards[i] == null)
                 {
                     handCards[i] = Instantiate(cardPrefab);
                     if (isPlayer)
                     {
                         handCards[i].InitCard(cardData, SelectCard);
-                        Debug.Log("カードID" + cardData.ID);
+                        Debug.Log("プレイヤーInitCard時のID" + cardData.ID);    //ID=1が５回。その後処理なし
                     }
                     else
                     {
                         handCards[i].InitCard(cardData, null);
+                        Debug.Log("相手のInitCard時のID" + cardData.ID);     //ID=1が５回
                     }
                     handCards[i].ApplyCard(BuildUpCount);
+                    break;
                 }
             }
             count--;

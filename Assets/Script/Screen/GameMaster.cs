@@ -51,15 +51,19 @@ public class GameMaster : MonoBehaviour
     {
         state = State.Battle;
 
-        player.deckData.CreateData();
+        player.deckData.CreateData();   //デッキ生成
         enemy.deckData.CreateData();
 
-        player.DrawCard(3);
-        enemy.DrawCard(3);
+        Debug.Log("プレイヤードロー３枚");
+        player.DrawCard(3);     //ID=1を5回　handCards[i].InitCard(cardData, SelectCard);している
+        Debug.Log("エネミードロー３枚");
+        enemy.DrawCard(3);      //同様
         while(state == State.Battle)
         {
-            player.DrawCard(1);
-            enemy.DrawCard(1);
+            Debug.Log("プレイヤードロー1枚");
+            player.DrawCard(1);     //handCards[i].InitCard(cardData, SelectCard);の処理を行っていない
+            Debug.Log("エネミードロー1枚");
+            enemy.DrawCard(1);      //同様
             player.TurnStart();
             enemy.TurnStart();
 

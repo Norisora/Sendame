@@ -8,7 +8,7 @@ public class DeckData
 
     public void CreateData()
     {
-        int[] Data = { 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
+        int[] Data = { 1, 2, 3, 3, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
 
         foreach (var v in Data)
         {
