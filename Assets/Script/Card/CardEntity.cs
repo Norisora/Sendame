@@ -9,11 +9,11 @@ public class CardEntity : ScriptableObject
     {
         Attack,
         Shield,
-        BuildUp,
-    }
+        Charge,
+    };
     public int cardID;
     public CardType cardType;
-    public int needBuildUpValue;
+    public int needChargeValue;
     public string cardName;
     public Sprite icon;
 }

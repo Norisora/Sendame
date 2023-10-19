@@ -15,5 +15,5 @@ public class CardData
 
     public CardType Type { get; set; }
 
-    public int NeedBuildUpValue { get; set; }
+    public int NeedChargeValue { get; set; }
 }

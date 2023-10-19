@@ -13,10 +13,12 @@ public class DeckUserBase : MonoBehaviour
     CardController[] handCards;
 
     public int Life { get; private set; }
-    public int BuildUpCount { get; private set; }
+    public int ChargeCount { get; private set; }
     public CardController SelectCardObject { get; private set; }
     protected bool IsTurnEnd { get; private set; }
 
+    float cardSpacing = 5.0f;   //手札内のカードの間隔
+    float firstCardPos = 9.0f;
     private void Awake()
     {
         handCards = new CardController[5];
@@ -29,7 +31,7 @@ public class DeckUserBase : MonoBehaviour
         {
             if (v != null)
             {
-                v.ApplyCard(BuildUpCount);
+                v.ApplyCard(ChargeCount);
             }
         }
     }
@@ -44,29 +46,30 @@ public class DeckUserBase : MonoBehaviour
         }
     }
 
-    public void DrawCard(int count)
+    public void DrawCard(int count, Transform parent)
     {
         while (count > 0)
         {
             var cardData = deckData.PassCard();     //デッキの一番上のCardDataを渡す
-            Debug.Log("for直前のカードID" + cardData.ID);      //ID=1が5回、ID=2が５回、ID=3が５回
+            Debug.Log("for直前のカードID" + cardData.ID);
             for (int i = 0; i < handCards.Length; i++)
             {
-                Debug.Log("for直後のカードID" + cardData.ID);      //ID=1が5回、ID=2が５回、ID=3が５回
+                Debug.Log("for直後のカードID" + cardData.ID);
                 if (handCards[i] == null)
                 {
-                    handCards[i] = Instantiate(cardPrefab);
+                    Vector2 initPos = InitPosCalc(parent, i);   //InitPosCalcで配置ポジションの計算している
+                    handCards[i] = Instantiate(cardPrefab, initPos, Quaternion.identity, parent);
                     if (isPlayer)
                     {
                         handCards[i].InitCard(cardData, SelectCard);
-                        Debug.Log("プレイヤーInitCard時のID" + cardData.ID);    //ID=1が５回。その後処理なし
+                        Debug.Log("プレイヤーInitCard時のID" + cardData.ID);
                     }
                     else
                     {
                         handCards[i].InitCard(cardData, null);
-                        Debug.Log("相手のInitCard時のID" + cardData.ID);     //ID=1が５回
+                        Debug.Log("相手のInitCard時のID" + cardData.ID);
                     }
-                    handCards[i].ApplyCard(BuildUpCount);
+                    handCards[i].ApplyCard(ChargeCount);
                     break;
                 }
             }
@@ -81,6 +84,14 @@ public class DeckUserBase : MonoBehaviour
     }
     public void BuildUp(int buildUpCount)
     {
-        BuildUpCount += buildUpCount;
+        ChargeCount += buildUpCount;
+    }
+
+    //カードドロー時の手札内の配置ポジション計算
+    Vector2 InitPosCalc(Transform parent, int i)
+    {
+        float posX = parent.position.x - firstCardPos + (i * cardSpacing);
+
+        return new Vector2(posX, parent.position.y);
     }
 }

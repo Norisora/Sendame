@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 3
   cardType: 2
-  needBuildUpValue: 0
-  cardName: BuildUp
+  needChargeValue: 0
+  cardName: Charge
   icon: {fileID: 21300000, guid: c78e58b304f2e0645899c5aa1918a5fd, type: 3}

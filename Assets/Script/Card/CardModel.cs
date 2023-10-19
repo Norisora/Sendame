@@ -7,6 +7,7 @@ public class CardModel
     public int cardID;
     public string name;
     public Sprite icon;
+    
 
     public CardModel(int cardID)
     {
