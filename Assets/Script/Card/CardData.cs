@@ -8,7 +8,7 @@ public class CardData
     {
         Attack,
         Shield,
-        BuildUp,
+        Charge,
     };
 
     public int ID { get; set; }

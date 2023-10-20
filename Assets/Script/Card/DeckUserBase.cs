@@ -23,6 +23,7 @@ public class DeckUserBase : MonoBehaviour
     {
         handCards = new CardController[5];
         deckData = new DeckData();
+        Life = 3;
     }
 
     public virtual void TurnStart()
@@ -32,6 +33,7 @@ public class DeckUserBase : MonoBehaviour
             if (v != null)
             {
                 v.ApplyCard(ChargeCount);
+                Debug.Log("チャージカウント" + ChargeCount);
             }
         }
     }
@@ -80,13 +82,18 @@ public class DeckUserBase : MonoBehaviour
     public void SelectCard(CardController cardController)
     {
         SelectCardObject = cardController;
+        SelectCardObject.Data.Type = cardController.Data.Type;
         IsTurnEnd = true;
     }
-    public void BuildUp(int buildUpCount)
+    public void Charge(int chargeCount)
     {
-        ChargeCount += buildUpCount;
+        ChargeCount += chargeCount;
     }
 
+    public void GetDamage(int cardAttackPoint)
+    {
+        Life -= cardAttackPoint;
+    }
     //カードドロー時の手札内の配置ポジション計算
     Vector2 InitPosCalc(Transform parent, int i)
     {

@@ -65,7 +65,9 @@ public class GameMaster : MonoBehaviour
             Debug.Log("エネミードロー1枚");
             enemy.DrawCard(1, enemyHand);      //同様
             player.TurnStart();
+            Debug.Log("プレイヤーターン");
             enemy.TurnStart();
+            Debug.Log("エネミーターン");
 
             yield return player.Turn();
             yield return enemy.Turn();
@@ -82,13 +84,13 @@ public class GameMaster : MonoBehaviour
         var playerType = player.SelectCardObject.Data.Type;
         var enemyType = enemy.SelectCardObject.Data.Type;
 
-        if (playerType == CardType.Attack && enemyType != CardType.BuildUp)
+        if (playerType == CardType.Attack && enemyType != CardType.Shield)
         {
-            //Enemyのダメージ
+            enemy.GetDamage(1);    //エネミーのダメージ
         }
-        if (enemyType == CardType.Attack && playerType != CardType.BuildUp)
+        if (enemyType == CardType.Attack && playerType != CardType.Shield)
         {
-            //Playerのダメージ
+            player.GetDamage(1);    //プレイヤーのダメージ
         }
 
         if(player.Life <= 0)
@@ -102,13 +104,13 @@ public class GameMaster : MonoBehaviour
             yield break;
         }
 
-        if(playerType == CardType.BuildUp)
+        if(playerType == CardType.Charge)
         {
-            player.BuildUp(1);
+            player.Charge(1);
         }
-        if(enemyType == CardType.BuildUp)
+        if(enemyType == CardType.Charge)
         {
-            enemy.BuildUp(1);
+            enemy.Charge(1);
         }
 
         //

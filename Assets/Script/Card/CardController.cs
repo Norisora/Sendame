@@ -17,6 +17,16 @@ public class CardController : MonoBehaviour, IPointerDownHandler
     {
         CardView = GetComponent<CardView>();
     }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Debug.Log("オンポインターダウン");
+        if (!IsActive) return;
+
+        if (SelectCard != null)
+        {
+            SelectCard(this);
+        }
+    }
 
     public void InitCard(CardData cardData, Action<CardController> selectCard)    //カード生成時に呼ばれる関数
     {
@@ -27,23 +37,14 @@ public class CardController : MonoBehaviour, IPointerDownHandler
         CardView.Show(CardModel);       //カードの生成
     }
 
-    public void ApplyCard(int currentBuildUp)
+    //チャージ数が足りていたらAttackを使えるようにする
+    public void ApplyCard(int currentCharge)
     {
-        IsActive = currentBuildUp >= Data.NeedChargeValue;
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if(!IsActive) return;
-
-        if(SelectCard != null)
-        {
-            SelectCard(this);
-        }
+        IsActive = currentCharge >= Data.NeedChargeValue;
     }
     
     //プライオリティ優先度の加減
-    public void AppleyPriority()
+    public void ApplyPriority()
     {
 
     }
