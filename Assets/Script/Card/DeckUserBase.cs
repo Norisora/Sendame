@@ -10,7 +10,7 @@ public class DeckUserBase : MonoBehaviour
     CardController cardPrefab;
 
     public DeckData deckData;
-    CardController[] handCards;
+    protected CardController[] handCards;
 
     public int Life { get; private set; }
     public int ChargeCount { get; private set; }
@@ -41,7 +41,6 @@ public class DeckUserBase : MonoBehaviour
     public IEnumerator Turn()
     {
         IsTurnEnd = false;
-
         while (!IsTurnEnd)
         {
             yield return null;
@@ -53,10 +52,8 @@ public class DeckUserBase : MonoBehaviour
         while (count > 0)
         {
             var cardData = deckData.PassCard();     //デッキの一番上のCardDataを渡す
-            Debug.Log("for直前のカードID" + cardData.ID);
             for (int i = 0; i < handCards.Length; i++)
             {
-                Debug.Log("for直後のカードID" + cardData.ID);
                 if (handCards[i] == null)
                 {
                     Vector2 initPos = InitPosCalc(parent, i);   //InitPosCalcで配置ポジションの計算している
@@ -83,11 +80,14 @@ public class DeckUserBase : MonoBehaviour
     {
         SelectCardObject = cardController;
         SelectCardObject.Data.Type = cardController.Data.Type;
+        Debug.Log("selectカードタイプ" + SelectCardObject.Data.Type);     //カードタイプはAttack
+        Debug.Log("selectカードID" + SelectCardObject.Data.ID);           //IDはクリックしたカードのID
         IsTurnEnd = true;
     }
     public void Charge(int chargeCount)
     {
         ChargeCount += chargeCount;
+        Debug.Log("チャージ！" +  ChargeCount);
     }
 
     public void GetDamage(int cardAttackPoint)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardController : MonoBehaviour, IPointerDownHandler
+public class CardController : MonoBehaviour
 {
     Action<CardController> SelectCard;
     public bool IsActive { get; private set; }
@@ -17,14 +17,15 @@ public class CardController : MonoBehaviour, IPointerDownHandler
     {
         CardView = GetComponent<CardView>();
     }
-    public void OnPointerDown(PointerEventData eventData)
+    
+
+    public void OnMouseDown()
     {
-        Debug.Log("オンポインターダウン");
         if (!IsActive) return;
 
         if (SelectCard != null)
         {
-            SelectCard(this);
+            SelectCard(this); 
         }
     }
 
@@ -32,9 +33,11 @@ public class CardController : MonoBehaviour, IPointerDownHandler
     {
         SelectCard = selectCard;
         Data = cardData;
-        int cardID = Data.ID;
-        CardModel = new CardModel(cardID);  //カードIDを元にScriptableObjectからカードデータを取得
+
+        CardModel = new CardModel(Data.ID);  //カードIDを元にScriptableObjectからカードデータを取得
+        Data.Type = CardModel.cardType;     //ここに追加
         CardView.Show(CardModel);       //カードの生成
+        Debug.Log("InitCard CardDataのData.Type" + Data.Type);
     }
 
     //チャージ数が足りていたらAttackを使えるようにする

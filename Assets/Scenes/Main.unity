@@ -751,6 +751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5884833048424718687, guid: b1b6892403f23094faf8e0c115750bdf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6404214240128238815, guid: b1b6892403f23094faf8e0c115750bdf, type: 3}
       propertyPath: m_Camera
       value: 

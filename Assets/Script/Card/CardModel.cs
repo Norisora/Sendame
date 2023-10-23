@@ -6,6 +6,7 @@ public class CardModel
 {
     public int cardID;
     public string name;
+    public CardType cardType;
     public Sprite icon;
     
 
@@ -14,6 +15,7 @@ public class CardModel
         CardEntity cardEntity = Resources.Load<CardEntity>("CardEntityList/Card" + cardID);
 
         cardID = cardEntity.cardID;
+        cardType = cardEntity.cardType;
         name = cardEntity.cardName;
         icon = cardEntity.icon;
     }

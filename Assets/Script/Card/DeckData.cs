@@ -6,9 +6,9 @@ public class DeckData
 {
     List<CardData> cards = new List<CardData>();
 
-    public void CreateData()
+    public void CreateData(int[] data)
     {
-        int[] Data = { 1, 2, 3, 3, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
+        int[] Data = data;
 
         foreach (var v in Data)
         {

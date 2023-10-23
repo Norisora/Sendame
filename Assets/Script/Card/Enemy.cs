@@ -8,9 +8,10 @@ public class Enemy : DeckUserBase
     {
         base.TurnStart();
         SelectPart();
+
     }
     public void SelectPart()
     {
-
+        
     }
 }
