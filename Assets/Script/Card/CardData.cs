@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class CardData
 {
-    public int ID { get; set; }
+    public CardModel CardModel { get; set; }
 
-    public CardType Type { get; set; }
-
-    public int NeedChargeValue { get; set; }
+    public void CreateCard(int ID)
+    {
+        CardModel = new CardModel(ID);
+    }
 }

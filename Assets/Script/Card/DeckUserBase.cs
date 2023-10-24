@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DeckUserBase : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class DeckUserBase : MonoBehaviour
     bool isPlayer;
     [SerializeField]
     CardController cardPrefab;
+
+    [SerializeField]
+    TextMeshProUGUI UIText;
 
     public DeckData deckData;
     protected CardController[] handCards;
@@ -24,6 +28,7 @@ public class DeckUserBase : MonoBehaviour
         handCards = new CardController[5];
         deckData = new DeckData();
         Life = 3;
+        ApplyUI();
     }
 
     public virtual void TurnStart()
@@ -33,9 +38,9 @@ public class DeckUserBase : MonoBehaviour
             if (v != null)
             {
                 v.ApplyCard(ChargeCount);
-                Debug.Log("チャージカウント" + ChargeCount);
             }
         }
+        Debug.Log("チャージカウント" + ChargeCount);
     }
 
     public virtual IEnumerator Turn()
@@ -61,12 +66,12 @@ public class DeckUserBase : MonoBehaviour
                     if (isPlayer)
                     {
                         handCards[i].InitCard(cardData, SelectCard);
-                        Debug.Log("プレイヤーInitCard時のID" + cardData.ID);
+                        Debug.Log("プレイヤーInitCard時のID" + cardData.CardModel.cardID);
                     }
                     else
                     {
                         handCards[i].InitCard(cardData, null);
-                        Debug.Log("相手のInitCard時のID" + cardData.ID);
+                        Debug.Log("相手のInitCard時のID" + cardData.CardModel.cardID);
                     }
                     handCards[i].ApplyCard(ChargeCount);
                     break;
@@ -76,23 +81,33 @@ public class DeckUserBase : MonoBehaviour
         }
     }
 
-    public void SelectCard(CardController cardController)
+    public void SelectCard(CardController selected)
     {
-        SelectCardObject = cardController;
-        SelectCardObject.Data.Type = cardController.Data.Type;
-        Debug.Log("selectカードタイプ" + SelectCardObject.Data.Type);     //カードタイプはAttack
-        Debug.Log("selectカードID" + SelectCardObject.Data.ID);           //IDはクリックしたカードのID
+        SelectCardObject = selected;
+        Debug.Log("selectカードタイプ" + SelectCardObject.Data.CardModel.cardType);     //カードタイプはAttack
+        Debug.Log("selectカードID" + SelectCardObject.Data.CardModel.cardID);           //IDはクリックしたカードのID
+        for (int i = 0; i < handCards.Length; ++i)
+        {
+            if (handCards[i] == selected)
+            {
+                handCards[i] = null;    //カード出した
+            }
+        }
+
         IsTurnEnd = true;
+        Destroy(SelectCardObject.gameObject);   //わかりやすくするため
     }
     public void Charge(int chargeCount)
     {
         ChargeCount += chargeCount;
+        ApplyUI();
         Debug.Log("チャージ！" +  ChargeCount);
     }
 
     public void GetDamage(int cardAttackPoint)
     {
         Life -= cardAttackPoint;
+        ApplyUI() ;
     }
     //カードドロー時の手札内の配置ポジション計算
     Vector2 InitPosCalc(Transform parent, int i)
@@ -100,5 +115,9 @@ public class DeckUserBase : MonoBehaviour
         float posX = parent.position.x - firstCardPos + (i * cardSpacing);
 
         return new Vector2(posX, parent.position.y);
+    }
+    void ApplyUI()
+    {
+        UIText.text = $"{Life} {ChargeCount}";
     }
 }

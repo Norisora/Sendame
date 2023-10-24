@@ -10,9 +10,9 @@ public class CardController : MonoBehaviour
     public bool IsActive { get; private set; }
     public CardData Data { get; private set; }
     public CardView CardView { get; private set; }
-    public CardModel CardModel { get; private set; }
 
     public int Priority { get; private set; }
+   
     private void Awake()
     {
         CardView = GetComponent<CardView>();
@@ -34,21 +34,19 @@ public class CardController : MonoBehaviour
         SelectCard = selectCard;
         Data = cardData;
 
-        CardModel = new CardModel(Data.ID);  //カードIDを元にScriptableObjectからカードデータを取得
-        Data.Type = CardModel.cardType;     //ここに追加
-        CardView.Show(CardModel);       //カードの生成
-        Debug.Log("InitCard CardDataのData.Type" + Data.Type);
+        CardView.Show(Data.CardModel);       //カードの生成
+        Debug.Log("InitCard CardDataのData.Type" + Data.CardModel.cardType);
     }
 
     //チャージ数が足りていたらAttackを使えるようにする
     public void ApplyCard(int currentCharge)
     {
-        IsActive = currentCharge >= Data.NeedChargeValue;
+        IsActive = currentCharge >= Data.CardModel.needChargeValue;
     }
     
     //プライオリティ優先度の加減
-    public void ApplyPriority()
+    public void ApplyPriority(int value)
     {
-
+        Priority += value;
     }
 }

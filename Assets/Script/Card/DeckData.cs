@@ -12,7 +12,9 @@ public class DeckData
 
         foreach (var v in Data)
         {
-            cards.Add(new CardData() { ID = v });
+            var cardData = new CardData();
+            cardData.CreateCard(v);
+            cards.Add(cardData);
         }
     }
 
