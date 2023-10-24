@@ -38,7 +38,7 @@ public class DeckUserBase : MonoBehaviour
         }
     }
 
-    public IEnumerator Turn()
+    public virtual IEnumerator Turn()
     {
         IsTurnEnd = false;
         while (!IsTurnEnd)

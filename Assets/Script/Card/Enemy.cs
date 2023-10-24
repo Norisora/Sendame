@@ -14,4 +14,10 @@ public class Enemy : DeckUserBase
     {
         
     }
+    public override IEnumerator Turn()
+    {
+        base.Turn();
+        yield return null;
+        SelectCard(handCards[2]);
+    }
 }
