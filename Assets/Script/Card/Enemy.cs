@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Enemy : DeckUserBase
 {
+    [SerializeField]
     Player player;
     public override void TurnStart()
     {
@@ -14,22 +15,34 @@ public class Enemy : DeckUserBase
     }
     public void SelectPart()
     {
-        if(player.ChargeCount > 0)
+        if (player.ChargeCount > 0)
         {
-            for(int i = 0; i < handCards.Length; ++i)
+            var cards = handCards.Where(
+                Type => Type.Data.CardModel.cardType == CardType.Shield);
+            //ヒットしたカードタイプの手札にアプライプライオリティ
+            foreach (var card in cards)
             {
-                handCards[i] = handCards.FirstOrDefault(Type => Type.Data.CardModel.cardType == CardType.Shield);
-                //ヒットしたカードタイプの手札にアプライプライオリティ
-                handCards[i].ApplyPriority(1);
+                card.ApplyPriority(1);
+                Debug.Log($"Card Priority: {card.Priority}");
+                Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
             }
-
         }
+        else return;
     }
     public override IEnumerator Turn()
     {
         base.Turn();
         yield return null;
-
-        //SelectCard(handCards.OrderBy(Priority).Last());   //手札の中の
+        if(handCards != null && handCards.Any())
+        {
+            //手札の中のPriorityが一番高いものを選択
+            var cards = handCards.OrderBy(card => card != null).ToArray();
+            SelectCard(cards.OrderBy(card => card.Priority).Last());
+        }
+        else
+        {
+            SelectCard(handCards[0]);
+        }
+        
     }
 }

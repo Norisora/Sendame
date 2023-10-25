@@ -50,6 +50,7 @@ MonoBehaviour:
   isPlayer: 0
   cardPrefab: {fileID: 8711327994858093793, guid: e6c0a50f98dd3d9459a30eb7981ddaec, type: 3}
   UIText: {fileID: 6310880954300297443}
+  player: {fileID: 6427309305087059314}
 --- !u!1 &1524708102170423333
 GameObject:
   m_ObjectHideFlags: 0

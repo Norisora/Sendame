@@ -25,7 +25,7 @@ public class DeckUserBase : MonoBehaviour
     float firstCardPos = 9.0f;
     private void Awake()
     {
-        handCards = new CardController[5];
+        handCards = new CardController[4];
         deckData = new DeckData();
         Life = 3;
         ApplyUI();

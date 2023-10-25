@@ -35,7 +35,6 @@ public class CardController : MonoBehaviour
         Data = cardData;
 
         CardView.Show(Data.CardModel);       //カードの生成
-        Debug.Log("InitCard CardDataのData.Type" + Data.CardModel.cardType);
     }
 
     //チャージ数が足りていたらAttackを使えるようにする
