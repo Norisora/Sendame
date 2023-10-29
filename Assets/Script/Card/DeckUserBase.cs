@@ -25,7 +25,7 @@ public class DeckUserBase : MonoBehaviour
     float firstCardPos = 9.0f;
     private void Awake()
     {
-        handCards = new CardController[4];
+        handCards = new CardController[5];
         deckData = new DeckData();
         Life = 3;
         ApplyUI();
@@ -40,7 +40,6 @@ public class DeckUserBase : MonoBehaviour
                 v.ApplyCard(ChargeCount);
             }
         }
-        Debug.Log("チャージカウント" + ChargeCount);
     }
 
     public virtual IEnumerator Turn()
@@ -101,7 +100,7 @@ public class DeckUserBase : MonoBehaviour
     {
         ChargeCount += chargeCount;
         ApplyUI();
-        Debug.Log("チャージ！" +  ChargeCount);
+        Debug.Log("チャージ" +  ChargeCount);
     }
 
     public void GetDamage(int cardAttackPoint)

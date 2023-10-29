@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -15,19 +16,59 @@ public class Enemy : DeckUserBase
     }
     public void SelectPart()
     {
-        if (player.ChargeCount > 0)
+        var selectCards = handCards.Where(card => card != null).ToArray();    //nullでない手札の配列作る
+        if (ChargeCount <= 0)
         {
-            var cards = handCards.Where(
-                Type => Type.Data.CardModel.cardType == CardType.Shield);
-            //ヒットしたカードタイプの手札にアプライプライオリティ
-            foreach (var card in cards)
+            Debug.Log("エネミーのチャージ０以下 Attack選択不可");
+            //Attack以外のカードを選択
+            var noAttackCards = selectCards.Where(type => type.IsActive).ToArray();
+            //noAttackCardsの中から選択
+            if (0 < player.ChargeCount)
             {
-                card.ApplyPriority(1);
+                Debug.Log("プレイヤーチャージカウント0より大");
+                var shieldCards = noAttackCards.Where(
+                    type => type.Data.CardModel.cardType == CardType.Shield).ToArray();
+                //ヒットしたカードタイプの手札にアプライプライオリティ
+                foreach (var card in shieldCards)
+                {
+                    card.ApplyPriority(1);
+                    Debug.Log($"Card Priority: {card.Priority}");
+                    Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
+                }
+            }
+            else
+            {
+                Debug.Log("プレイヤーチャージカウント0");
+                var chargeCards = noAttackCards.Where(
+                    type => type.Data.CardModel.cardType == CardType.Charge).ToArray();
+                foreach (var card in chargeCards)
+                {
+                    card.ApplyPriority(1);
+                    Debug.Log($"Card Priority: {card.Priority}");
+                    Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
+                }
+            }
+        }
+        else if (0 < ChargeCount)
+        {
+            Debug.Log("エネミーチャージカウント0より大" + ChargeCount);
+            var attackCards = selectCards.Where(type => type.Data.CardModel.cardType == CardType.Attack).ToArray();
+            foreach (var card in attackCards)
+            {
+                card.ApplyPriority(2);
                 Debug.Log($"Card Priority: {card.Priority}");
                 Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
             }
         }
-        else return;
+        else
+        {
+            Debug.LogError("ChargeCount Error!");
+        }
+        //プライオリティを0に
+        foreach (var card in selectCards)
+        {
+            card.PriorityZero();
+        }
     }
     public override IEnumerator Turn()
     {
@@ -36,13 +77,12 @@ public class Enemy : DeckUserBase
         if(handCards != null && handCards.Any())
         {
             //手札の中のPriorityが一番高いものを選択
-            var cards = handCards.OrderBy(card => card != null).ToArray();
+            var cards = handCards.Where(card => card != null).ToArray();
             SelectCard(cards.OrderBy(card => card.Priority).Last());
         }
         else
         {
-            SelectCard(handCards[0]);
+            Debug.LogError("EnemyHands No Cards!");
         }
-        
     }
 }

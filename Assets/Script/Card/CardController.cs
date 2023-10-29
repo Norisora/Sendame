@@ -34,7 +34,7 @@ public class CardController : MonoBehaviour
         SelectCard = selectCard;
         Data = cardData;
 
-        CardView.Show(Data.CardModel);       //カードの生成
+        CardView.Show(Data.CardModel);       // TODO カードの生成山札0になるとエラー発生
     }
 
     //チャージ数が足りていたらAttackを使えるようにする
@@ -47,5 +47,10 @@ public class CardController : MonoBehaviour
     public void ApplyPriority(int value)
     {
         Priority += value;
+    }
+    public void PriorityZero()
+    {
+        Priority = 0;
+        Debug.Log("プライオリティを0に");
     }
 }
