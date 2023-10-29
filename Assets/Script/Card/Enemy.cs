@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : DeckUserBase
@@ -21,7 +20,7 @@ public class Enemy : DeckUserBase
         {
             Debug.Log("エネミーのチャージ０以下 Attack選択不可");
             //Attack以外のカードを選択
-            var noAttackCards = selectCards.Where(type => type.IsActive).ToArray();
+            var noAttackCards = selectCards.Where(type => type.IsActive == true).ToArray();
             //noAttackCardsの中から選択
             if (0 < player.ChargeCount)
             {
@@ -65,10 +64,7 @@ public class Enemy : DeckUserBase
             Debug.LogError("ChargeCount Error!");
         }
         //プライオリティを0に
-        foreach (var card in selectCards)
-        {
-            card.PriorityZero();
-        }
+
     }
     public override IEnumerator Turn()
     {
@@ -78,7 +74,15 @@ public class Enemy : DeckUserBase
         {
             //手札の中のPriorityが一番高いものを選択
             var cards = handCards.Where(card => card != null).ToArray();
+            if (!cards.Any() )
+            {
+                yield break;
+            }
             SelectCard(cards.OrderBy(card => card.Priority).Last());
+            foreach (var card in cards)
+            {
+                card.PriorityZero();
+            }
         }
         else
         {

@@ -30,7 +30,10 @@ public class DeckUserBase : MonoBehaviour
         Life = 3;
         ApplyUI();
     }
-
+    public CardController[] GetHandCards()
+    {
+        return handCards;
+    }
     public virtual void TurnStart()
     {
         foreach (var v in handCards)
@@ -56,6 +59,10 @@ public class DeckUserBase : MonoBehaviour
         while (count > 0)
         {
             var cardData = deckData.PassCard();     //ƒfƒbƒL‚Ìˆê”Ôã‚ÌCardData‚ğ“n‚·
+            if (cardData == null)
+            {
+                break;
+            }
             for (int i = 0; i < handCards.Length; i++)
             {
                 if (handCards[i] == null)
@@ -94,7 +101,6 @@ public class DeckUserBase : MonoBehaviour
         }
 
         IsTurnEnd = true;
-        Destroy(SelectCardObject.gameObject);   //‚í‚©‚è‚â‚·‚­‚·‚é‚½‚ß
     }
     public void Charge(int chargeCount)
     {
@@ -112,11 +118,17 @@ public class DeckUserBase : MonoBehaviour
     Vector2 InitPosCalc(Transform parent, int i)
     {
         float posX = parent.position.x - firstCardPos + (i * cardSpacing);
-
         return new Vector2(posX, parent.position.y);
     }
     void ApplyUI()
     {
         UIText.text = $"{Life} {ChargeCount}";
+    }
+
+    public void MoveToField(CardController selectedCard,Transform parent)
+    {
+        selectedCard.transform.SetParent(parent);
+        selectedCard.transform.localPosition = Vector2.zero;
+        Destroy(selectedCard.gameObject, 1.0f);
     }
 }
