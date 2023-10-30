@@ -15,7 +15,19 @@ public class Enemy : DeckUserBase
     }
     public void SelectPart()
     {
+        // TODO バグ　プレイヤーチャージ２エネミーチャージ０の時　Attack選択
         var selectCards = handCards.Where(card => card != null).ToArray();    //nullでない手札の配列作る
+        if (0 < ChargeCount)
+        {
+            Debug.Log("エネミーチャージカウント0より大" + ChargeCount);
+            var attackCards = selectCards.Where(type => type.Data.CardModel.cardType == CardType.Attack).ToArray();
+            foreach (var card in attackCards)
+            {
+                card.ApplyPriority(2);
+                Debug.Log($"Card Priority: {card.Priority}");
+                Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
+            }
+        }
         if (ChargeCount <= 0)
         {
             Debug.Log("エネミーのチャージ０以下 Attack選択不可");
@@ -48,21 +60,7 @@ public class Enemy : DeckUserBase
                 }
             }
         }
-        else if (0 < ChargeCount)
-        {
-            Debug.Log("エネミーチャージカウント0より大" + ChargeCount);
-            var attackCards = selectCards.Where(type => type.Data.CardModel.cardType == CardType.Attack).ToArray();
-            foreach (var card in attackCards)
-            {
-                card.ApplyPriority(2);
-                Debug.Log($"Card Priority: {card.Priority}");
-                Debug.Log("ApplyPriorityカードType" + card.Data.CardModel.cardType);
-            }
-        }
-        else
-        {
-            Debug.LogError("ChargeCount Error!");
-        }
+
         //プライオリティを0に
 
     }
@@ -73,7 +71,7 @@ public class Enemy : DeckUserBase
         if(handCards != null && handCards.Any())
         {
             //手札の中のPriorityが一番高いものを選択
-            var cards = handCards.Where(card => card != null).ToArray();
+            var cards = handCards.Where(card => card != null && card.IsActive).ToArray();
             if (!cards.Any() )
             {
                 yield break;

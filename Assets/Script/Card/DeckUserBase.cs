@@ -61,6 +61,8 @@ public class DeckUserBase : MonoBehaviour
             var cardData = deckData.PassCard();     //デッキの一番上のCardDataを渡す
             if (cardData == null)
             {
+                Debug.Log("山札がない");
+                Life = 0;
                 break;
             }
             for (int i = 0; i < handCards.Length; i++)
@@ -89,6 +91,7 @@ public class DeckUserBase : MonoBehaviour
 
     public void SelectCard(CardController selected)
     {
+        if (selected == null) return;
         SelectCardObject = selected;
         Debug.Log("selectカードタイプ" + SelectCardObject.Data.CardModel.cardType);     //カードタイプはAttack
         Debug.Log("selectカードID" + SelectCardObject.Data.CardModel.cardID);           //IDはクリックしたカードのID
@@ -123,10 +126,15 @@ public class DeckUserBase : MonoBehaviour
     void ApplyUI()
     {
         UIText.text = $"{Life} {ChargeCount}";
+        
     }
 
     public void MoveToField(CardController selectedCard,Transform parent)
     {
+        if (selectedCard == null)
+        {
+            return;
+        }
         selectedCard.transform.SetParent(parent);
         selectedCard.transform.localPosition = Vector2.zero;
         Destroy(selectedCard.gameObject, 1.0f);

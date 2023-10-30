@@ -15,7 +15,7 @@ public class CardModel
     {
         CardEntity cardEntity = Resources.Load<CardEntity>("CardEntityList/Card" + cardID);
 
-        cardID = cardEntity.cardID;
+        this.cardID = cardEntity.cardID;
         cardType = cardEntity.cardType;
         name = cardEntity.cardName;
         needChargeValue = cardEntity.needChargeValue;

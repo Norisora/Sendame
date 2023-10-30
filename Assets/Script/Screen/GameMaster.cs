@@ -33,7 +33,7 @@ public class GameMaster : MonoBehaviour
     State state;
 
     int[] playerDeckData = { 1, 2, 3, 3, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
-    int[] enemyDeckData = { 1, 3, 3, 2, /*2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, */};
+    int[] enemyDeckData = { 1, 3, 3, 2, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
 
     // Start is called before the first frame update
     void Start()
@@ -71,22 +71,30 @@ public class GameMaster : MonoBehaviour
         }
 
         //リザルト＝＝＝
+        if (state == State.Tie)  //ひきわけ
+        {
+            GameDirector.Instance.TransitionManager.
+                TransitionScreen(ConstScreenList.ScreenType.Main);
+        }
         if (state == State.PlayerLose)  //プレイヤーまけ
         {
             GameDirector.Instance.TransitionManager.
                 TransitionScreen(ConstScreenList.ScreenType.GameOver);
         }
+        if (state == State.PlayerWin)  //プレイヤーかち
+        {
+            GameDirector.Instance.TransitionManager.
+                TransitionScreen(ConstScreenList.ScreenType.Title);
+        }
+
         //=============
     }
 
     IEnumerator BattlePart()
     {
-        var playerHandCards = player.GetHandCards();
-        var enemyHandCards = enemy.GetHandCards();
-        
         var playerType = player.SelectCardObject.Data.CardModel.cardType;
-        player.MoveToField(player.SelectCardObject, playerField);
         var enemyType = enemy.SelectCardObject.Data.CardModel.cardType;
+        player.MoveToField(player.SelectCardObject, playerField);
         enemy.MoveToField(enemy.SelectCardObject, enemyField);
         yield return new WaitForSeconds(1);
 
@@ -115,18 +123,18 @@ public class GameMaster : MonoBehaviour
             Debug.Log("ひきわけ");
             yield break;
         }
-        if(player.Life <= 0 || playerHandCards == null)
-             {
-                state = State.PlayerLose;
-                Debug.Log("playerのまけ");
-                yield break;
-             }
-        if(enemy.Life <= 0 || enemyHandCards == null)
-             {
-                state = State.PlayerWin;
-                Debug.Log("プレイヤーのかち");
-                yield break;
-             }
+        if(player.Life <= 0)
+        {
+        state = State.PlayerLose;
+        Debug.Log("playerのまけ");
+        yield break;
+        }
+        if(enemy.Life <= 0)
+        {
+        state = State.PlayerWin;
+        Debug.Log("プレイヤーのかち");
+        yield break;
+        }
 
         if(playerType == CardType.Charge)
         {
