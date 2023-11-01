@@ -111,9 +111,10 @@ public class GameMaster : MonoBehaviour
         {
             player.Charge(-1);
             if (enemyType != CardType.Shield) 
-            { 
-                enemy.GetDamage(10);    //エネミーのダメージ
-                enemy.numberAnimeGNT.GenerateNumber(10);
+            {
+                enemy.numberAnimeGNT.GenerateNumber(enemy.SelectCardObject.Data.CardModel.attackValue);
+                enemy.GetDamage(enemy.SelectCardObject.Data.CardModel.attackValue);    //エネミーのダメージ
+                
                 Debug.Log("enemyのダメージ");
             }
         }
@@ -122,8 +123,9 @@ public class GameMaster : MonoBehaviour
             enemy.Charge(-1);
             if(playerType != CardType.Shield)
             {
-                player.GetDamage(10);    //プレイヤーのダメージ
-                player.numberAnimeGNT.GenerateNumber(10);
+                player.numberAnimeGNT.GenerateNumber(player.SelectCardObject.Data.CardModel.attackValue);
+                player.GetDamage(player.SelectCardObject.Data.CardModel.attackValue);    //プレイヤーのダメージ
+                
                 Debug.Log("playerのダメージ");
             }
         }

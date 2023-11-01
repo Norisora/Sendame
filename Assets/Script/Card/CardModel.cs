@@ -9,7 +9,8 @@ public class CardModel
     public int needChargeValue;
     public CardType cardType;
     public Sprite icon;
-    
+    public int attackValue;
+
 
     public CardModel(int cardID)
     {
@@ -20,5 +21,6 @@ public class CardModel
         name = cardEntity.cardName;
         needChargeValue = cardEntity.needChargeValue;
         icon = cardEntity.icon;
+        attackValue = cardEntity.attackValue;
     }
 }

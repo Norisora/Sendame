@@ -15,5 +15,6 @@ public class CardEntity : ScriptableObject
     public CardType cardType;
     public int needChargeValue;
     public string cardName;
+    public int attackValue;
     public Sprite icon;
 }
