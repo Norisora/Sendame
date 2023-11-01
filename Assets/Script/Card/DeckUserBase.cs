@@ -11,7 +11,9 @@ public class DeckUserBase : MonoBehaviour
     CardController cardPrefab;
 
     [SerializeField]
-    TextMeshProUGUI UIText;
+    TextMeshProUGUI LifeValueText, ChargeValueText;
+    
+    public NumberAnimationGenerator numberAnimeGNT;
 
     public DeckData deckData;
     protected CardController[] handCards;
@@ -27,7 +29,7 @@ public class DeckUserBase : MonoBehaviour
     {
         handCards = new CardController[5];
         deckData = new DeckData();
-        Life = 3;
+        Life = 100;
         ApplyUI();
     }
     public CardController[] GetHandCards()
@@ -125,8 +127,8 @@ public class DeckUserBase : MonoBehaviour
     }
     void ApplyUI()
     {
-        UIText.text = $"{Life} {ChargeCount}";
-        
+        LifeValueText.text = $"{Life}";
+        ChargeValueText.text = $"{ChargeCount}";
     }
 
     public void MoveToField(CardController selectedCard,Transform parent)

@@ -18,13 +18,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField]
     CardController cardPrefab;
     [SerializeField]
-    Transform enemyHand;
-    [SerializeField]
-    Transform enemyField;
-    [SerializeField]
-    Transform playerField;
-    [SerializeField]
-    Transform playerHand;
+    Transform enemyHand, enemyField, playerField, playerHand;
 
     [SerializeField]
     Player player;
@@ -58,6 +52,21 @@ public class GameMaster : MonoBehaviour
             player.DrawCard(1, playerHand);
             Debug.Log("エネミードロー1枚");
             enemy.DrawCard(1, enemyHand);
+            if(player.Life == 0 && enemy.Life == 0)
+            {
+                state = State.Tie;
+                break;
+            }
+            if (player.Life == 0)
+            {
+                state = State.PlayerLose;
+                break;
+            }
+            if (enemy.Life == 0)
+            {
+                state = State.PlayerWin;
+                break;
+            }
             player.TurnStart();
             Debug.Log("プレイヤーターン");
             enemy.TurnStart();
@@ -103,7 +112,8 @@ public class GameMaster : MonoBehaviour
             player.Charge(-1);
             if (enemyType != CardType.Shield) 
             { 
-                enemy.GetDamage(1);    //エネミーのダメージ
+                enemy.GetDamage(10);    //エネミーのダメージ
+                enemy.numberAnimeGNT.GenerateNumber(10);
                 Debug.Log("enemyのダメージ");
             }
         }
@@ -112,7 +122,8 @@ public class GameMaster : MonoBehaviour
             enemy.Charge(-1);
             if(playerType != CardType.Shield)
             {
-                player.GetDamage(1);    //プレイヤーのダメージ
+                player.GetDamage(10);    //プレイヤーのダメージ
+                player.numberAnimeGNT.GenerateNumber(10);
                 Debug.Log("playerのダメージ");
             }
         }
@@ -125,15 +136,15 @@ public class GameMaster : MonoBehaviour
         }
         if(player.Life <= 0)
         {
-        state = State.PlayerLose;
-        Debug.Log("playerのまけ");
-        yield break;
+            state = State.PlayerLose;
+            Debug.Log("playerのまけ");
+            yield break;
         }
         if(enemy.Life <= 0)
         {
-        state = State.PlayerWin;
-        Debug.Log("プレイヤーのかち");
-        yield break;
+            state = State.PlayerWin;
+            Debug.Log("プレイヤーのかち");
+            yield break;
         }
 
         if(playerType == CardType.Charge)

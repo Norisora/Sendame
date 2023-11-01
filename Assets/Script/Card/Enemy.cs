@@ -15,7 +15,6 @@ public class Enemy : DeckUserBase
     }
     public void SelectPart()
     {
-        // TODO バグ　プレイヤーチャージ２エネミーチャージ０の時　Attack選択
         var selectCards = handCards.Where(card => card != null).ToArray();    //nullでない手札の配列作る
         if (0 < ChargeCount)
         {
