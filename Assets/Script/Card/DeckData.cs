@@ -28,4 +28,8 @@ public class DeckData
         cards.RemoveAt(0);
         return ret;
     }
+    public int GetDeckCount()
+    {
+        return cards.Count();
+    }
 }

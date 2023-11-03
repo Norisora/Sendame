@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -41,6 +42,11 @@ public class CardController : MonoBehaviour
     public void ApplyCard(int currentCharge)
     {
         IsActive = currentCharge >= Data.CardModel.needChargeValue;
+        //if (!IsActive)
+        //{
+        //    var cardColor =Data.CardModel.icon.GetComponent<Color>();
+        //    cardColor = Color.gray;
+        //}
     }
     
     //プライオリティ優先度の加減

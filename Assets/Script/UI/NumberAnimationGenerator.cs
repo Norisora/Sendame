@@ -10,16 +10,17 @@ public class NumberAnimationGenerator : MonoBehaviour
     GameObject parent;
     [SerializeField]
     NumberAnimation generatePrefab;
+    Color color;
 
-    public void GenerateNumber(int number)
+    public void GenerateNumber(int number,Color color)
     {
-        StartCoroutine(Generate(number, null));
+        StartCoroutine(Generate(number, color, null));
     }
-    public void GenerateNumber(int number, System.Action endCallback)
+    public void GenerateNumber(int number, Color color,System.Action endCallback)
     {
-        StartCoroutine(Generate(number, endCallback));
+        StartCoroutine(Generate(number, color, endCallback));
     }
-    public IEnumerator Generate(int number, System.Action endCallback = null)
+    public IEnumerator Generate(int number, Color color, System.Action endCallback = null)
     {
         var numberText = number.ToString();
 
@@ -36,7 +37,7 @@ public class NumberAnimationGenerator : MonoBehaviour
         var count = 0;
         for (int i = 0; i < numberAnimations.Length; ++i)
         {
-            numberAnimations[i].StartAnimation( () => count++); //文字数分アニメさせる
+            numberAnimations[i].StartAnimation(color, () => count++); //文字数分アニメさせる
             yield return new WaitForSeconds(0.1f);
         }
 

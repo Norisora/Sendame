@@ -26,13 +26,14 @@ public class NumberAnimation : MonoBehaviour
         textNumber.text = number;
     }
 
-    public void StartAnimation(System.Action endCallback)
+    public void StartAnimation(Color color, System.Action endCallback)
     {
         var temp = textNumber.rectTransform.localPosition;
         temp.y += MoveYValue;
 
         var sequence = DOTween.Sequence();
 
+        textNumber.color = color;
         canvasGroup.alpha = 1.0f;
         sequence.Append(textNumber.rectTransform.DOLocalMoveY(-MoveYValue, 0.15f));
         sequence.AppendInterval(0.5f);  //ï∂éöè¡Ç¶ÇÈÇ‹Ç≈ÇÃä‘äu

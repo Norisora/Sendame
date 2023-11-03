@@ -72,6 +72,8 @@ public class GameMaster : MonoBehaviour
             enemy.TurnStart();
             Debug.Log("エネミーターン");
 
+            yield return player.SendText();
+
             yield return player.Turn();
             Debug.Log("プレイヤーターンの終了" + player.SelectCardObject.Data.CardModel.cardType);
             yield return enemy.Turn();
@@ -101,18 +103,18 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator BattlePart()
     {
+        Debug.Log("バトルパート");
         var playerType = player.SelectCardObject.Data.CardModel.cardType;
         var enemyType = enemy.SelectCardObject.Data.CardModel.cardType;
         player.MoveToField(player.SelectCardObject, playerField);
         enemy.MoveToField(enemy.SelectCardObject, enemyField);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.0f);
 
         if (playerType == CardType.Attack)
         {
             player.Charge(-1);
             if (enemyType != CardType.Shield) 
             {
-                enemy.numberAnimeGNT.GenerateNumber(enemy.SelectCardObject.Data.CardModel.attackValue);
                 enemy.GetDamage(enemy.SelectCardObject.Data.CardModel.attackValue);    //エネミーのダメージ
                 
                 Debug.Log("enemyのダメージ");
@@ -123,7 +125,6 @@ public class GameMaster : MonoBehaviour
             enemy.Charge(-1);
             if(playerType != CardType.Shield)
             {
-                player.numberAnimeGNT.GenerateNumber(player.SelectCardObject.Data.CardModel.attackValue);
                 player.GetDamage(player.SelectCardObject.Data.CardModel.attackValue);    //プレイヤーのダメージ
                 
                 Debug.Log("playerのダメージ");

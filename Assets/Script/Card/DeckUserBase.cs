@@ -11,7 +11,7 @@ public class DeckUserBase : MonoBehaviour
     CardController cardPrefab;
 
     [SerializeField]
-    TextMeshProUGUI LifeValueText, ChargeValueText;
+    TextMeshProUGUI LifeValueText, ChargeValueText, DeckCount;
     
     public NumberAnimationGenerator numberAnimeGNT;
 
@@ -116,6 +116,7 @@ public class DeckUserBase : MonoBehaviour
 
     public void GetDamage(int cardAttackPoint)
     {
+        numberAnimeGNT.GenerateNumber(SelectCardObject.Data.CardModel.attackValue, Color.red);
         Life -= cardAttackPoint;
         ApplyUI() ;
     }
@@ -129,6 +130,7 @@ public class DeckUserBase : MonoBehaviour
     {
         LifeValueText.text = $"{Life}";
         ChargeValueText.text = $"{ChargeCount}";
+        DeckCount.text = $"{deckData.GetDeckCount()}";
     }
 
     public void MoveToField(CardController selectedCard,Transform parent)
@@ -141,4 +143,5 @@ public class DeckUserBase : MonoBehaviour
         selectedCard.transform.localPosition = Vector2.zero;
         Destroy(selectedCard.gameObject, 1.0f);
     }
+
 }
