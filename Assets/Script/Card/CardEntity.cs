@@ -12,9 +12,10 @@ public enum CardType
 public class CardEntity : ScriptableObject
 {
     public int cardID;
+    public Sprite icon;
     public CardType cardType;
     public int needChargeValue;
     public string cardName;
     public int attackValue;
-    public Sprite icon;
+    public int shieldValue;
 }

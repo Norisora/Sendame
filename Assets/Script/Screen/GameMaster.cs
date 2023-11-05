@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
-using static CardData;
+using DG.Tweening;
 
 public class GameMaster : MonoBehaviour
 {
@@ -19,15 +20,17 @@ public class GameMaster : MonoBehaviour
     CardController cardPrefab;
     [SerializeField]
     Transform enemyHand, enemyField, playerField, playerHand;
-
+    [SerializeField]
+    TextMeshProUGUI yourTurnText, youWin, youLose;
     [SerializeField]
     Player player;
     [SerializeField]
     Enemy enemy;
     State state;
 
-    int[] playerDeckData = { 1, 2, 3, 3, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
-    int[] enemyDeckData = { 1, 3, 3, 2, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
+    int[] playerDeckData = { 400, 2, 3, 500, 400, 6, 3, 2, 3, 1, 2, 3, 1, 2, 3, };
+    int[] enemyDeckData = { 6, 3, 3, 7, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
+    //[4]A30[5]A60[6]S30[7]S60
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +75,7 @@ public class GameMaster : MonoBehaviour
             enemy.TurnStart();
             Debug.Log("エネミーターン");
 
-            yield return player.SendText();
+            yield return SendText(yourTurnText);
 
             yield return player.Turn();
             Debug.Log("プレイヤーターンの終了" + player.SelectCardObject.Data.CardModel.cardType);
@@ -89,13 +92,15 @@ public class GameMaster : MonoBehaviour
         }
         if (state == State.PlayerLose)  //プレイヤーまけ
         {
+            yield return SendText(youLose);
             GameDirector.Instance.TransitionManager.
-                TransitionScreen(ConstScreenList.ScreenType.GameOver);
+                TransitionScreen(ConstScreenList.ScreenType.Title);
         }
         if (state == State.PlayerWin)  //プレイヤーかち
         {
+            yield return SendText(youWin);
             GameDirector.Instance.TransitionManager.
-                TransitionScreen(ConstScreenList.ScreenType.Title);
+                TransitionScreen(ConstScreenList.ScreenType.GameOver);
         }
 
         //=============
@@ -104,28 +109,30 @@ public class GameMaster : MonoBehaviour
     IEnumerator BattlePart()
     {
         Debug.Log("バトルパート");
-        var playerType = player.SelectCardObject.Data.CardModel.cardType;
-        var enemyType = enemy.SelectCardObject.Data.CardModel.cardType;
+        var playerCard = player.SelectCardObject.Data.CardModel;
+        var enemyCard = enemy.SelectCardObject.Data.CardModel;
+        var playerType = playerCard.cardType;
+        var enemyType = enemyCard.cardType;
         player.MoveToField(player.SelectCardObject, playerField);
         enemy.MoveToField(enemy.SelectCardObject, enemyField);
         yield return new WaitForSeconds(1.0f);
 
         if (playerType == CardType.Attack)
         {
-            player.Charge(-1);
+            player.Charge(-playerCard.needChargeValue);
             if (enemyType != CardType.Shield) 
             {
-                enemy.GetDamage(enemy.SelectCardObject.Data.CardModel.attackValue);    //エネミーのダメージ
+                enemy.GetDamage(playerCard.attackValue - enemyCard.shieldValue);    //エネミーのダメージ
                 
                 Debug.Log("enemyのダメージ");
             }
         }
         if (enemyType == CardType.Attack)
         {
-            enemy.Charge(-1);
+            enemy.Charge(-enemyCard.needChargeValue);
             if(playerType != CardType.Shield)
             {
-                player.GetDamage(player.SelectCardObject.Data.CardModel.attackValue);    //プレイヤーのダメージ
+                player.GetDamage(enemyCard.attackValue - playerCard.shieldValue);    //プレイヤーのダメージ
                 
                 Debug.Log("playerのダメージ");
             }
@@ -165,5 +172,14 @@ public class GameMaster : MonoBehaviour
 
         //
         yield break;
+    }
+    public IEnumerator SendText(TextMeshProUGUI text)
+    {
+        //ターン数表示
+        float y = text.rectTransform.localScale.y;
+        text.rectTransform.DOLocalMoveX(0, 0.5f);
+        yield return new WaitForSeconds(2.0f);
+        text.rectTransform.DOLocalMoveX(-2500, 0.5f);
+        yield return new WaitForSeconds(0.5f);
     }
 }

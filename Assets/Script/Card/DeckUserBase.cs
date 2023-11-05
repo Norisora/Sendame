@@ -11,9 +11,12 @@ public class DeckUserBase : MonoBehaviour
     CardController cardPrefab;
 
     [SerializeField]
-    TextMeshProUGUI LifeValueText, ChargeValueText, DeckCount;
-    
-    public NumberAnimationGenerator numberAnimeGNT;
+    TextMeshProUGUI LifeValueText, ChargeValueText, DeckCountValue;
+
+    [SerializeField]
+    NumberAnimationGenerator lifeUI;
+    [SerializeField]
+    NumberAnimationGenerator chargeUI;
 
     public DeckData deckData;
     protected CardController[] handCards;
@@ -61,6 +64,7 @@ public class DeckUserBase : MonoBehaviour
         while (count > 0)
         {
             var cardData = deckData.PassCard();     //デッキの一番上のCardDataを渡す
+            DeckCountValue.text = $"{deckData.GetDeckCount()}";  //デッキカウントUI更新
             if (cardData == null)
             {
                 Debug.Log("山札がない");
@@ -109,15 +113,23 @@ public class DeckUserBase : MonoBehaviour
     }
     public void Charge(int chargeCount)
     {
+        if (chargeCount < 0)
+        {
+            chargeUI.GenerateNumber(chargeCount, Color.black);
+        }
+        else
+        {
+            chargeUI.GenerateNumber(chargeCount, Color.green);
+        }
         ChargeCount += chargeCount;
         ApplyUI();
-        Debug.Log("チャージ" +  ChargeCount);
     }
 
-    public void GetDamage(int cardAttackPoint)
+    public void GetDamage(int damagePoint)
     {
-        numberAnimeGNT.GenerateNumber(SelectCardObject.Data.CardModel.attackValue, Color.red);
-        Life -= cardAttackPoint;
+        //var LifeRT = LifeValueText.rectTransform.gameObject;
+        lifeUI.GenerateNumber(damagePoint, Color.red);
+        Life -= damagePoint;    //MathF絶対値にしたほうがいい？
         ApplyUI() ;
     }
     //カードドロー時の手札内の配置ポジション計算
@@ -130,7 +142,6 @@ public class DeckUserBase : MonoBehaviour
     {
         LifeValueText.text = $"{Life}";
         ChargeValueText.text = $"{ChargeCount}";
-        DeckCount.text = $"{deckData.GetDeckCount()}";
     }
 
     public void MoveToField(CardController selectedCard,Transform parent)

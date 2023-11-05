@@ -16,7 +16,7 @@ public class NumberAnimationGenerator : MonoBehaviour
     {
         StartCoroutine(Generate(number, color, null));
     }
-    public void GenerateNumber(int number, Color color,System.Action endCallback)
+    public void GenerateNumber(int number, Color color, System.Action endCallback)
     {
         StartCoroutine(Generate(number, color, endCallback));
     }
