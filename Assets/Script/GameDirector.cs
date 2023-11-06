@@ -10,7 +10,7 @@ public class GameDirector : SingletonBehaviour<GameDirector>
     [SerializeField]
     TransitionManager transitionManager;
 
-    public Camera MainCameara => mainCamera;
+    public Camera MainCamera => mainCamera;
     public TransitionManager TransitionManager => transitionManager;
 
     protected override void OnCreateSingleton()

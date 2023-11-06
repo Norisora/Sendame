@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TitleScreen : ScreenBase
+public class DeckBuildScreen : ScreenBase
 {
     [SerializeField]
     Button next;
@@ -14,8 +14,8 @@ public class TitleScreen : ScreenBase
 
     private void Start()
     {
-        text.text = "Title";
-        next.onClick.AddListener(() => GameDirector.Instance.TransitionManager.TransitionScreen(ConstScreenList.ScreenType.DeckBuild));
+        text.text = "DeckBuild";
+        next.onClick.AddListener(() => GameDirector.Instance.TransitionManager.TransitionScreen(ConstScreenList.ScreenType.Main));
     }
 
 }

@@ -35,10 +35,7 @@ public class DeckUserBase : MonoBehaviour
         Life = 100;
         ApplyUI();
     }
-    public CardController[] GetHandCards()
-    {
-        return handCards;
-    }
+
     public virtual void TurnStart()
     {
         foreach (var v in handCards)

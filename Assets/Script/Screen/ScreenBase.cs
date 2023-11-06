@@ -19,7 +19,7 @@ public class ScreenBase : MonoBehaviour
 
         foreach (var canvas in canvasList)
         {
-            canvas.worldCamera = GameDirector.Instance.MainCameara;
+            canvas.worldCamera = GameDirector.Instance.MainCamera;
         }
     }
 

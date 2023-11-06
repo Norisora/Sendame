@@ -9,6 +9,7 @@ public static class ConstScreenList
     {
         None,
         Title,
+        DeckBuild,
         Main,
         GameOver,
     }
@@ -17,6 +18,7 @@ public static class ConstScreenList
     public static readonly Dictionary<ScreenType, string> ScreenPaths = new Dictionary<ScreenType, string>()
     {
         { ScreenType.Title, $"{DirectoryPath}/TitleScreen" },
+        { ScreenType.DeckBuild, $"{DirectoryPath}/DeckBuildScreen" },
         { ScreenType.Main, $"{DirectoryPath}/MainScreen" },
         { ScreenType.GameOver, $"{DirectoryPath}/GameOverScreen" },
     };
