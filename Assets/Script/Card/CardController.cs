@@ -35,7 +35,7 @@ public class CardController : MonoBehaviour
         SelectCard = selectCard;
         Data = cardData;
 
-        CardView.Show(Data.CardModel);       // TODO カードの生成山札0になるとエラー発生
+        CardView.Show(Data.CardModel);
     }
 
     //チャージ数が足りていたらAttackを使えるようにする
