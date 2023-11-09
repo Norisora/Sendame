@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
     [SerializeField] TMP_Text nameText, needChargeValue, attackValue, shieldValue;
     [SerializeField] SpriteRenderer iconImage;
+    [SerializeField] Image image;
 
     public void Show(CardModel cardModel)
     {
@@ -36,6 +38,13 @@ public class CardView : MonoBehaviour
         {
             needChargeValue.text = cardModel.needChargeValue.ToString();
         }
-        iconImage.sprite = cardModel.icon;
+        if(iconImage != null)
+        {
+            iconImage.sprite = cardModel.icon;
+        }
+        if (image != null)
+        {
+            image.sprite = cardModel.icon;
+        }
     }
 }

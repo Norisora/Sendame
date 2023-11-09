@@ -5,7 +5,7 @@ using System.Linq;
 public class DeckData
 {
     List<CardData> cards = new List<CardData>();
-    int[] deck = new int[30];   //30枚のデッキ構成
+    public List<int> deck = new ();   //デッキ構成
     public void CreateData(int[] data)
     {
         int[] Data = data;
@@ -18,15 +18,15 @@ public class DeckData
         }
     }
 
-    public int[] Choice(int cardID)
+    public List<int> Choice(int cardID)
     {
-        deck.ToList().Add(cardID);
+        deck.Add(cardID);
         return deck;
     }
 
-    void Building()     //ボタン押したらデッキ構築し保存
+    public void Building()     //ボタン押したらデッキ構築し保存
     {
-        CreateData(deck);
+        CreateData(deck.ToArray());
         //プレイヤープレフスUnityEngineつく他のクラスで実行
     }
 
