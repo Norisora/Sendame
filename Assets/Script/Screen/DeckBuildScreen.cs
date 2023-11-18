@@ -11,11 +11,10 @@ public class DeckBuildScreen : ScreenBase
     [SerializeField]
     TextMeshProUGUI text;
 
-
     private void Start()
     {
         text.text = "DeckBuild";
         next.onClick.AddListener(() => GameDirector.Instance.TransitionManager.TransitionScreen(ConstScreenList.ScreenType.Main));
+        SoundManager.instance.PlayBGM(SoundManager.BGMType.DeckBuilding);
     }
-
 }

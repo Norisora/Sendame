@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class GameMaster : MonoBehaviour
 {
@@ -28,14 +29,34 @@ public class GameMaster : MonoBehaviour
     Enemy enemy;
     State state;
 
-    int[] playerDeckData = { 400, 2, 3, 500, 400, 6, 3, 2, 3, 1, 2, 3, 1, 2, 3, };
+    int[] playerDeckData/* = { 400, 2, 3, 500, 400, 6, 3, 2, 3, 1, 2, 3, 1, 2, 3, }*/;
     int[] enemyDeckData = { 6, 3, 3, 7, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
     //[4]A30[5]A60[6]S30[7]S60
 
+    int turnCount = 1;
+    DeckUserBase deckUser;
     // Start is called before the first frame update
     void Start()
     {
+        yourTurnText.text = "TurnCount " + turnCount.ToString();
+        if (SaveDataManager.Instance.HasSaveData(SaveDataManager.SaveType.Deck))
+        {
+            player.deckData = SaveDataManager.Instance.Load<DeckData>(SaveDataManager.SaveType.Deck);
+            playerDeckData = player.deckData.deck.ToArray();
+            var random = new System.Random();
+            playerDeckData = playerDeckData.OrderBy(x => random.Next()).ToArray();
+        }
+        LoadDeck(player);
+            
+        SoundManager.instance.PlayBGM(SoundManager.BGMType.Battle);
+        
         StartCoroutine(GameLoop());
+    }
+
+    void LoadDeck(DeckUserBase deckUser)
+    {
+        deckUser.deckData = SaveDataManager.Instance.Load<DeckData>(SaveDataManager.SaveType.Deck);
+        playerDeckData = deckUser.deckData.deck.ToArray();
     }
 
     IEnumerator GameLoop()
@@ -82,22 +103,27 @@ public class GameMaster : MonoBehaviour
             yield return enemy.Turn();
             Debug.Log("エネミーターンの終了");
             yield return BattlePart();
+            turnCount++;
+            yourTurnText.text = "TurnCount " + turnCount.ToString();
         }
 
         //リザルト＝＝＝
         if (state == State.Tie)  //ひきわけ
         {
+            SoundManager.instance.PlayBGM(SoundManager.BGMType.Tie);
             GameDirector.Instance.TransitionManager.
                 TransitionScreen(ConstScreenList.ScreenType.Main);
         }
         if (state == State.PlayerLose)  //プレイヤーまけ
         {
+            SoundManager.instance.PlayBGM(SoundManager.BGMType.Lose);
             yield return SendText(youLose);
             GameDirector.Instance.TransitionManager.
                 TransitionScreen(ConstScreenList.ScreenType.Title);
         }
         if (state == State.PlayerWin)  //プレイヤーかち
         {
+            SoundManager.instance.PlayBGM(SoundManager.BGMType.Win);
             yield return SendText(youWin);
             GameDirector.Instance.TransitionManager.
                 TransitionScreen(ConstScreenList.ScreenType.GameOver);
@@ -113,12 +139,13 @@ public class GameMaster : MonoBehaviour
         var enemyCard = enemy.SelectCardObject.Data.CardModel;
         var playerType = playerCard.cardType;
         var enemyType = enemyCard.cardType;
-        player.MoveToField(player.SelectCardObject, playerField);
-        enemy.MoveToField(enemy.SelectCardObject, enemyField);
+        StartCoroutine( player.MoveToField(player.SelectCardObject, playerField, null));
+        StartCoroutine(enemy.MoveToField(enemy.SelectCardObject, enemyField, null));
         yield return new WaitForSeconds(1.0f);
 
         if (playerType == CardType.Attack)
         {
+            SoundManager.instance.PlaySE(SoundManager.SEType.Attack);
             player.Charge(-playerCard.needChargeValue);
             if (enemyType != CardType.Shield) 
             {
@@ -129,6 +156,7 @@ public class GameMaster : MonoBehaviour
         }
         if (enemyType == CardType.Attack)
         {
+            SoundManager.instance.PlaySE(SoundManager.SEType.Attack);
             enemy.Charge(-enemyCard.needChargeValue);
             if(playerType != CardType.Shield)
             {
@@ -159,11 +187,13 @@ public class GameMaster : MonoBehaviour
 
         if(playerType == CardType.Charge)
         {
+            SoundManager.instance.PlaySE(SoundManager.SEType.Charge);
             player.Charge(1);
             Debug.Log("Playerチャージ！" + player.ChargeCount);
         }
         if(enemyType == CardType.Charge)
         {
+            SoundManager.instance.PlaySE(SoundManager.SEType.Charge);
             enemy.Charge(1);
             Debug.Log("Enemyチャージ！" + enemy.ChargeCount);
         }
@@ -172,6 +202,7 @@ public class GameMaster : MonoBehaviour
 
         //
         yield break;
+        
     }
     public IEnumerator SendText(TextMeshProUGUI text)
     {
@@ -179,7 +210,7 @@ public class GameMaster : MonoBehaviour
         float y = text.rectTransform.localScale.y;
         text.rectTransform.DOLocalMoveX(0, 0.5f);
         yield return new WaitForSeconds(2.0f);
-        text.rectTransform.DOLocalMoveX(-2500, 0.5f);
-        yield return new WaitForSeconds(0.5f);
+        yield return text.rectTransform.DOLocalMoveX(-2500, 0.5f);
+
     }
 }

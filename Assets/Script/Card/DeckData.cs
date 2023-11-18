@@ -17,17 +17,20 @@ public class DeckData
             cards.Add(cardData);
         }
     }
+    public void Building()     //ボタン押したらデッキ構築し保存
+    {
+        CreateData(deck.ToArray());
+    }
 
     public List<int> Choice(int cardID)
     {
         deck.Add(cardID);
         return deck;
     }
-
-    public void Building()     //ボタン押したらデッキ構築し保存
+    public List<int> Remove(int cardID)
     {
-        CreateData(deck.ToArray());
-        //プレイヤープレフスUnityEngineつく他のクラスで実行
+        deck.Remove(cardID);
+        return deck;
     }
 
     public CardData PassCard()

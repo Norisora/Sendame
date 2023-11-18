@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class DeckUserBase : MonoBehaviour
 {
@@ -141,15 +142,17 @@ public class DeckUserBase : MonoBehaviour
         ChargeValueText.text = $"{ChargeCount}";
     }
 
-    public void MoveToField(CardController selectedCard,Transform parent)
+    public IEnumerator MoveToField(CardController selectedCard,Transform parent, Action endCallCack = null)
     {
         if (selectedCard == null)
         {
-            return;
+            yield return null;
         }
         selectedCard.transform.SetParent(parent);
         selectedCard.transform.localPosition = Vector2.zero;
-        Destroy(selectedCard.gameObject, 1.0f);
+        yield return new WaitForSeconds(1.0f);
+        Destroy(selectedCard.gameObject);
+        endCallCack?.Invoke();
     }
 
 }

@@ -9,6 +9,8 @@ public class GameDirector : SingletonBehaviour<GameDirector>
     Camera mainCamera;
     [SerializeField]
     TransitionManager transitionManager;
+    [SerializeField]
+    SoundManager soundManager;
 
     public Camera MainCamera => mainCamera;
     public TransitionManager TransitionManager => transitionManager;
