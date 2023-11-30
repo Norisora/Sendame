@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Card1
   m_EditorClassIdentifier: 
   cardID: 1
+  icon: {fileID: 21300000, guid: cc5e02e8391d57246baf13909fd75673, type: 3}
   cardType: 0
   needChargeValue: 1
   cardName: Attack
   attackValue: 10
-  icon: {fileID: 21300000, guid: a1f082ffdd580a94c8d5d2d0b6f15bff, type: 3}
+  shieldValue: 0

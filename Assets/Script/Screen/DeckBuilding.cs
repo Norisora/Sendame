@@ -14,7 +14,7 @@ public class DeckBuilding : MonoBehaviour
     [SerializeField]
     CardController cardPrefab;
     [SerializeField]
-    RectTransform parent;
+    RectTransform cardListViewer;
     [SerializeField]
     Button saveButton;
     [SerializeField]
@@ -23,13 +23,13 @@ public class DeckBuilding : MonoBehaviour
     DropPlace dropPlace;
     CardController SelectCardObject { get; set; }
 
-    CardController[] Content { get; set; }
+    CardController[] CardListContents { get; set; }
 
     int deckIndex;
 
     private void Awake()
     {
-        Content = new CardController[CardIDs.Length];
+        CardListContents = new CardController[CardIDs.Length];
         CardList = new DeckData();  //所持カード
         NewDeckData = new DeckData();
     }
@@ -47,8 +47,8 @@ public class DeckBuilding : MonoBehaviour
         {
             var cardData = CardList.PassCard();
 
-            Content[i] = Instantiate(cardPrefab, parent);
-            Content[i].InitCard(cardData, SelectCard);
+            CardListContents[i] = Instantiate(cardPrefab, cardListViewer);
+            CardListContents[i].InitCard(cardData, SelectCard);
         }
     }
     public void SelectCard(CardController selected)
@@ -77,7 +77,7 @@ public class DeckBuilding : MonoBehaviour
             NewDeckData = SaveDataManager.Instance.Load<DeckData>(SaveDataManager.SaveType.Deck, deckIndex);
             foreach (var cardID in NewDeckData.deck)
             {
-                var card = Content.FirstOrDefault(v => v.Data.CardModel.cardID == cardID);
+                var card = CardListContents.FirstOrDefault(v => v.Data.CardModel.cardID == cardID);
                 if (card == null)
                 {
                     // TODO エラー　入るはずない　チートなど
@@ -93,7 +93,8 @@ public class DeckBuilding : MonoBehaviour
             NewDeckData.Building();
 
             SaveDataManager.Instance.Save(NewDeckData, SaveDataManager.SaveType.Deck, deckIndex);
-            SoundManager.instance.PlaySE(SoundManager.SEType.Save);
+            SoundManager.instance.PlayOneShot(SoundManager.OneShotType.Save);
+            //SoundManager.instance.PlaySE(SoundManager.SEType.Save);
             GameDirector.Instance.TransitionManager.TransitionScreen(ConstScreenList.ScreenType.Main);
         });
     }

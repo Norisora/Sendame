@@ -41,12 +41,13 @@ public class GameMaster : MonoBehaviour
         yourTurnText.text = "TurnCount " + turnCount.ToString();
         if (SaveDataManager.Instance.HasSaveData(SaveDataManager.SaveType.Deck))
         {
+            //LoadDeck(player);     //↓2行と同じ処理（処理共通化できる）
             player.deckData = SaveDataManager.Instance.Load<DeckData>(SaveDataManager.SaveType.Deck);
             playerDeckData = player.deckData.deck.ToArray();
             var random = new System.Random();
             playerDeckData = playerDeckData.OrderBy(x => random.Next()).ToArray();
         }
-        LoadDeck(player);
+
             
         SoundManager.instance.PlayBGM(SoundManager.BGMType.Battle);
         
@@ -145,7 +146,7 @@ public class GameMaster : MonoBehaviour
 
         if (playerType == CardType.Attack)
         {
-            SoundManager.instance.PlaySE(SoundManager.SEType.Attack);
+            SoundManager.instance.PlayOneShot(SoundManager.OneShotType.Attack);
             player.Charge(-playerCard.needChargeValue);
             if (enemyType != CardType.Shield) 
             {
@@ -156,7 +157,7 @@ public class GameMaster : MonoBehaviour
         }
         if (enemyType == CardType.Attack)
         {
-            SoundManager.instance.PlaySE(SoundManager.SEType.Attack);
+            SoundManager.instance.PlayOneShot(SoundManager.OneShotType.Attack);
             enemy.Charge(-enemyCard.needChargeValue);
             if(playerType != CardType.Shield)
             {
@@ -187,13 +188,13 @@ public class GameMaster : MonoBehaviour
 
         if(playerType == CardType.Charge)
         {
-            SoundManager.instance.PlaySE(SoundManager.SEType.Charge);
+            SoundManager.instance.PlayOneShot(SoundManager.OneShotType.Charge);
             player.Charge(1);
             Debug.Log("Playerチャージ！" + player.ChargeCount);
         }
         if(enemyType == CardType.Charge)
         {
-            SoundManager.instance.PlaySE(SoundManager.SEType.Charge);
+            SoundManager.instance.PlayOneShot(SoundManager.OneShotType.Charge);
             enemy.Charge(1);
             Debug.Log("Enemyチャージ！" + enemy.ChargeCount);
         }

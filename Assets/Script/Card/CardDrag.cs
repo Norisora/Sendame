@@ -22,7 +22,8 @@ public class CardDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         Debug.Log("OnBeginDrag");
         prevPos = rectTransform.localPosition;   //ドラッグ前の位置を記憶しておく
         //cardParent = transform.parent;
-
+        GameObject card = this.gameObject;
+        Instantiate(card, transform.parent);
         //transform.SetParent(cardParent.parent, false);
         GetComponent<CanvasGroup>().blocksRaycasts = false; // blocksRaycastsをオフにする
     }

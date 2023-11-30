@@ -183,15 +183,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2cfa465622387aa46ada20267b1f0e3e, type: 3}
   - {fileID: 8300000, guid: 94a95c28cef7f6c4f9d29f07555235b1, type: 3}
   - {fileID: 8300000, guid: d4752af6c5f20b148a343c888aaf2a01, type: 3}
+  OneShotClips:
+  - {fileID: 8300000, guid: 14b4cd06fd0e17248945ab005df5ee1c, type: 3}
+  - {fileID: 8300000, guid: 15230a232abba7b4294e284e4fcdd972, type: 3}
+  - {fileID: 8300000, guid: 58368655015d26b4998bb18f3e299642, type: 3}
+  - {fileID: 8300000, guid: 76bc38d87acb11b43b24a8e7d38ce138, type: 3}
   SEClips:
   - {fileID: 8300000, guid: 14b4cd06fd0e17248945ab005df5ee1c, type: 3}
   - {fileID: 8300000, guid: 15230a232abba7b4294e284e4fcdd972, type: 3}
   - {fileID: 8300000, guid: 58368655015d26b4998bb18f3e299642, type: 3}
   - {fileID: 8300000, guid: 76bc38d87acb11b43b24a8e7d38ce138, type: 3}
-  OneShotClips:
-  - {fileID: 8300000, guid: 2cfa465622387aa46ada20267b1f0e3e, type: 3}
-  - {fileID: 8300000, guid: 94a95c28cef7f6c4f9d29f07555235b1, type: 3}
-  - {fileID: 8300000, guid: d4752af6c5f20b148a343c888aaf2a01, type: 3}
 --- !u!1 &458816968
 GameObject:
   m_ObjectHideFlags: 0

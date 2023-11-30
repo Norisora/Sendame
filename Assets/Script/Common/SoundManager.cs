@@ -21,7 +21,7 @@ public class SoundManager : MonoBehaviour
         SILENCE = 999,        // 無音状態をBGMとして作成したい場合には追加しておく。それ以外は不要
     }
     // SE管理
-    public enum SEType
+    public enum OneShotType
     {
         // SE用の列挙子をゲームに合わせて登録
         Save,
@@ -29,13 +29,13 @@ public class SoundManager : MonoBehaviour
         Shield,
         Charge,
     }
-    public enum OneShotType
+    public enum SEType
     {
         // SE用の列挙子をゲームに合わせて登録
-        //oneshotはどうやってプレイ
-        Win,
-        Lose,
-        Tie,
+        Save,
+        Attack,
+        Shield,
+        Charge,
     }
 
     // クロスフェード時間
@@ -48,8 +48,9 @@ public class SoundManager : MonoBehaviour
 
     // === AudioClip ===
     public AudioClip[] BGMClips;
-    public AudioClip[] SEClips;
     public AudioClip[] OneShotClips;
+    public AudioClip[] SEClips;
+
 
     // SE用AudioMixer  未使用
     //public AudioMixer audioMixer;
@@ -57,8 +58,9 @@ public class SoundManager : MonoBehaviour
 
     // === AudioSource ===
     private AudioSource[] BGMSources = new AudioSource[2];
-    private AudioSource[] SESources = new AudioSource[16];
-    private AudioSource[] OneShotSources = new AudioSource[2];
+    private AudioSource[] OneShotSources = new AudioSource[3];
+    private AudioSource[] SESources = new AudioSource[3];
+
 
     private bool isCrossFading;
 
@@ -81,8 +83,13 @@ public class SoundManager : MonoBehaviour
         BGMSources[0] = gameObject.AddComponent<AudioSource>();
         BGMSources[1] = gameObject.AddComponent<AudioSource>();
 
+        //OneShot用AudioSource追加
+        for(int i = 0; i < OneShotSources.Length;  i++)
+        {
+            OneShotSources[i] = gameObject.AddComponent<AudioSource>();
+        }
         //SE用AudioSource追加
-        for(int i = 0; i < SESources.Length;  i++)
+        for (int i = 0; i < SESources.Length; i++)
         {
             SESources[i] = gameObject.AddComponent<AudioSource>();
         }
@@ -192,7 +199,25 @@ public class SoundManager : MonoBehaviour
         BGMSources[0].clip = null;
         BGMSources[1].clip = null;
     }
+    public int PlayOneShot(OneShotType oneShotType)
+    {
+        int index = (int)oneShotType;
+        if (index < 0 || OneShotClips.Length <= index) return -1;
 
+
+        //再生中でないAudioSourceを使ってSEを鳴らす
+        for (int i = 0; i < OneShotSources.Length; ++i)
+        {
+            var source = OneShotSources[i];
+            //再生中のAudioSourceのときは次のループ処理へ
+            if (source.isPlaying) continue;
+
+            //再生中でないAudioSourceにClipをセットしてSEを鳴らす
+            source.PlayOneShot(OneShotClips[index]);    //効果音鳴らす
+            return i;
+        }
+        return -1;  //エラー
+    }
     /// <summary>
     /// SE再生
     /// </summary>
@@ -233,23 +258,7 @@ public class SoundManager : MonoBehaviour
         SESources[sourceIndex].Stop();
         SESources[sourceIndex].clip = null;
     }
-    public void PlayOneShot(OneShotType oneShotType)
-    {
-        int index = (int)oneShotType;
-        if (index < 0 || OneShotClips.Length <= index) return;
 
-
-        //再生中でないAudioSourceを使ってSEを鳴らす
-        foreach (AudioSource source in OneShotSources)
-        {
-            //再生中のAudioSourceのときは次のループ処理へ
-            if (source.isPlaying) continue;
-
-            //再生中でないAudioSourceにClipをセットしてSEを鳴らす
-            source.PlayOneShot(OneShotClips[index]);    //効果音鳴らす
-            break;
-        }
-    }
 
     /// <summary>
     /// BGM一時停止
