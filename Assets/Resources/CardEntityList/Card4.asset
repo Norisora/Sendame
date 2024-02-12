@@ -16,6 +16,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a1f082ffdd580a94c8d5d2d0b6f15bff, type: 3}
   cardType: 0
   needChargeValue: 3
-  cardName: Attack30
-  attackValue: 30
+  cardName: Attack3
+  attackValue: 3
   shieldValue: 0

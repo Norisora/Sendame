@@ -17,5 +17,5 @@ MonoBehaviour:
   cardType: 0
   needChargeValue: 1
   cardName: Attack
-  attackValue: 10
+  attackValue: 1
   shieldValue: 0

@@ -14,30 +14,30 @@ public class CardView : MonoBehaviour
     {
         nameText.text = cardModel.name;
         
-        if(cardModel.attackValue == 0)
-        {
-            attackValue.gameObject.SetActive(false);
-        }
-        else
-        {
+        //if(cardModel.attackValue == 0)
+        //{
+        //    attackValue.gameObject.SetActive(false);
+        //}
+        //else
+        //{
             attackValue.text = cardModel.attackValue.ToString();
-        }
-        if(cardModel.shieldValue == 0)
-        {
-            shieldValue.gameObject.SetActive(false);
-        }
-        else
-        {
+        //}
+        //if(cardModel.shieldValue == 0)
+        //{
+        //    shieldValue.gameObject.SetActive(false);
+        //}
+        //else
+        //{
             shieldValue.text = cardModel.shieldValue.ToString();
-        }
-        if(cardModel.needChargeValue == 0)
-        {
-            needChargeValue.gameObject.SetActive(false);
-        }
-        else
-        {
+        //}
+        //if(cardModel.needChargeValue == 0)
+        //{
+        //    needChargeValue.gameObject.SetActive(false);
+        //}
+        //else
+        //{
             needChargeValue.text = cardModel.needChargeValue.ToString();
-        }
+        //}
         if(iconImage != null)
         {
             iconImage.sprite = cardModel.icon;

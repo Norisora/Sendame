@@ -33,7 +33,7 @@ public class DeckUserBase : MonoBehaviour
     {
         handCards = new CardController[5];
         deckData = new DeckData();
-        Life = 100;
+        Life = 10;
         ApplyUI();
     }
 
