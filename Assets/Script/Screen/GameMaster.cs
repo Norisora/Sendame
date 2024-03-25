@@ -29,8 +29,8 @@ public class GameMaster : MonoBehaviour
     Enemy enemy;
     State state;
 
-    int[] playerDeckData/* = { 400, 2, 3, 500, 400, 6, 3, 2, 3, 1, 2, 3, 1, 2, 3, }*/;
-    int[] enemyDeckData = { 6, 3, 3, 7, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
+    int[] playerDeckData = { 1, 2, 3, 1, /*2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, */};
+    int[] enemyDeckData = { 1, 2, 3, 1, 2, 1, 1, 2, 3, 1, 2, 3, 1, 2, 3, };
     //[4]A30[5]A60[6]S30[7]S60
 
     int turnCount = 1;
@@ -85,9 +85,16 @@ public class GameMaster : MonoBehaviour
             if (player.Life == 0)
             {
                 state = State.PlayerLose;
+                Debug.Log("プレイヤーの負け");
                 break;
             }
-            if (enemy.Life == 0)
+            if (player.deckData == null)
+            {
+                state = State.PlayerLose;
+                Debug.Log("プレイヤーの負け");
+                break;
+            }
+            if (enemy.Life == 0 || enemy.deckData == null)
             {
                 state = State.PlayerWin;
                 break;

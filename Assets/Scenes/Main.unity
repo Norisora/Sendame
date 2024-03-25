@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0129b03963d694418b5e1feea69d7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bootScreen: 1
+  bootScreen: 3
 --- !u!4 &1147047283
 Transform:
   m_ObjectHideFlags: 0

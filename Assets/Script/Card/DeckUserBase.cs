@@ -33,7 +33,7 @@ public class DeckUserBase : MonoBehaviour
     {
         handCards = new CardController[5];
         deckData = new DeckData();
-        Life = 10;
+        Life = 5;      //ヒットポイント
         ApplyUI();
     }
 
@@ -66,7 +66,7 @@ public class DeckUserBase : MonoBehaviour
             if (cardData == null)
             {
                 Debug.Log("山札がない");
-                Life = 0;
+                //Life = 0;
                 break;
             }
             for (int i = 0; i < handCards.Length; i++)
